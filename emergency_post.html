@@ -207,17 +207,31 @@
         document.addEventListener('DOMContentLoaded', function() {
             // 记录当前页面访问
             recordPageVisit();
-            // 设置时间（2天前）
-            const twoDaysAgo = new Date();
-            twoDaysAgo.setDate(twoDaysAgo.getDate() - 2);
-            const formattedDate = twoDaysAgo.toLocaleString('zh-CN', {
-                year: 'numeric',
-                month: '2-digit',
-                day: '2-digit',
-                hour: '2-digit',
-                minute: '2-digit'
-            }).replace(/\//g, '-');
-            document.getElementById('post-time').textContent = formattedDate;
+            
+            // 辅助函数：格式化日期
+            function formatDate(date) {
+                const year = date.getFullYear();
+                const month = String(date.getMonth() + 1).padStart(2, '0');
+                const day = String(date.getDate()).padStart(2, '0');
+                const hours = String(date.getHours()).padStart(2, '0');
+                const minutes = String(date.getMinutes()).padStart(2, '0');
+                return `${year}-${month}-${day} ${hours}:${minutes}`;
+            }
+            
+            // 设置时间线：按照正确顺序排列
+            const now = new Date();
+            
+            // 1. 小雨的求助帖：最早时间（4天前）
+            const postDate = new Date(now);
+            postDate.setDate(postDate.getDate() - 4);
+            postDate.setHours(14, 30, 0, 0); // 设置为下午2:30
+            document.getElementById('post-time').textContent = formatDate(postDate);
+            
+            // 4. 闺蜜（心莉）的评论：最晚时间（2天前，在邮件之后）
+            const replyDate = new Date(now);
+            replyDate.setDate(replyDate.getDate() - 2);
+            replyDate.setHours(10, 15, 0, 0); // 设置为上午10:15
+            document.getElementById('reply-time').textContent = formatDate(replyDate);
 
             // 返回首页功能
             const backToHomeBtn = document.getElementById('backToHomeBtn');

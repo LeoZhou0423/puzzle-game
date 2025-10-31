@@ -76,18 +76,21 @@
     <script>
         // 页面加载完成后执行
         document.addEventListener('DOMContentLoaded', function() {
-            // 显示当前时间减去五分钟
+            // 显示动态计算的邮件时间
             function displayEmailTime() {
                 const now = new Date();
-                // 减去五分钟
-                now.setMinutes(now.getMinutes() - 5);
+                
+                // 3. 闺蜜（心莉）的邮件：在小雨求助帖之后，小雨评论和闺蜜评论之前（3天前）
+                const emailDate = new Date(now);
+                emailDate.setDate(emailDate.getDate() - 3);
+                emailDate.setHours(10, 45, 0, 0); // 设置为上午10:45（确保在小雨评论之前）
                 
                 // 格式化时间
-                const year = now.getFullYear();
-                const month = String(now.getMonth() + 1).padStart(2, '0');
-                const day = String(now.getDate()).padStart(2, '0');
-                const hours = String(now.getHours()).padStart(2, '0');
-                const minutes = String(now.getMinutes()).padStart(2, '0');
+                const year = emailDate.getFullYear();
+                const month = String(emailDate.getMonth() + 1).padStart(2, '0');
+                const day = String(emailDate.getDate()).padStart(2, '0');
+                const hours = String(emailDate.getHours()).padStart(2, '0');
+                const minutes = String(emailDate.getMinutes()).padStart(2, '0');
                 
                 const formattedTime = `${year}年${month}月${day}日 ${hours}:${minutes}`;
                 document.getElementById('emailTime').textContent = formattedTime;
@@ -110,5 +113,4 @@
     <!-- 引入游戏倒计时脚本 -->
     <script src="countdown.js"></script>
 </body>
-
 </html>

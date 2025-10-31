@@ -80,7 +80,7 @@
                     <div class="ml-0 md:ml-6">
                         <h1 class="text-2xl font-bold text-gray-900">心莉</h1>
                         <p class="text-lg text-gray-700 mt-2">用户ID: #1024</p>
-                        <p class="text-lg text-gray-700 mt-1">注册时间: 2025-01-15</p>
+                        <p class="text-lg text-gray-700 mt-1" id="register-time">注册时间: 2025-01-15</p>
                     </div>
                 </div>
             </div>
@@ -129,6 +129,17 @@
         document.addEventListener('DOMContentLoaded', function() {
             // 页面加载时记录访问
             recordPageVisit();
+            
+            // 动态设置注册时间（设置为6个月前）
+            const now = new Date();
+            const registerDate = new Date(now);
+            registerDate.setMonth(registerDate.getMonth() - 6);
+            
+            const year = registerDate.getFullYear();
+            const month = String(registerDate.getMonth() + 1).padStart(2, '0');
+            const day = String(registerDate.getDate()).padStart(2, '0');
+            
+            document.getElementById('register-time').textContent = `注册时间: ${year}-${month}-${day}`;
             
             // 返回首页功能
             const backToHomeBtn = document.getElementById('backToHomeBtn');

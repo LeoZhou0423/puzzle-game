@@ -193,7 +193,7 @@
                                 <span id="reply-time-4" class="text-xs text-gray-500">2025-06-04 14:30</span>
                             </div>
                             <div class="mt-2 text-sm font-bold text-red-600">
-                                勿信招聘！！！！
+                                勿信招聘！！！
                             </div>
                         </div>
                     </div>
@@ -227,24 +227,46 @@
     <!-- JavaScript -->
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            // 获取当前时间并往前调整指定天数的函数
-            function getAdjustedDate(daysToSubtract, timeString) {
-                const now = new Date();
-                now.setDate(now.getDate() - daysToSubtract);
-                
-                const year = now.getFullYear();
-                const month = String(now.getMonth() + 1).padStart(2, '0');
-                const day = String(now.getDate()).padStart(2, '0');
-                
-                return `${year}-${month}-${day} ${timeString}`;
+            // 辅助函数：格式化日期
+            function formatDate(date) {
+                const year = date.getFullYear();
+                const month = String(date.getMonth() + 1).padStart(2, '0');
+                const day = String(date.getDate()).padStart(2, '0');
+                const hours = String(date.getHours()).padStart(2, '0');
+                const minutes = String(date.getMinutes()).padStart(2, '0');
+                return `${year}-${month}-${day} ${hours}:${minutes}`;
             }
             
-            // 更新时间显示
-            document.getElementById('post-time').textContent = getAdjustedDate(7, '11:20'); // 帖子：往前推7天
-            document.getElementById('reply-time-1').textContent = getAdjustedDate(7, '13:45'); // 回复1：往前推7天
-            document.getElementById('reply-time-2').textContent = getAdjustedDate(7, '16:20'); // 回复2：往前推7天
-            document.getElementById('reply-time-3').textContent = getAdjustedDate(6, '09:10'); // 回复3：往前推6天
-            document.getElementById('reply-time-4').textContent = getAdjustedDate(6, '14:30'); // 回复4：往前推6天
+            // 设置时间线：确保所有时间都是基于当前时间动态计算
+            const now = new Date();
+            
+            // 普通帖子：5天前
+            const postDate = new Date(now);
+            postDate.setDate(postDate.getDate() - 5);
+            postDate.setHours(11, 20, 0, 0);
+            document.getElementById('post-time').textContent = formatDate(postDate);
+            
+            // 回复1：同一天稍晚
+            const reply1Date = new Date(postDate);
+            reply1Date.setHours(13, 45, 0, 0);
+            document.getElementById('reply-time-1').textContent = formatDate(reply1Date);
+            
+            // 回复2：同一天更晚
+            const reply2Date = new Date(postDate);
+            reply2Date.setHours(16, 20, 0, 0);
+            document.getElementById('reply-time-2').textContent = formatDate(reply2Date);
+            
+            // 回复3：第二天上午
+            const reply3Date = new Date(postDate);
+            reply3Date.setDate(reply3Date.getDate() + 1);
+            reply3Date.setHours(9, 10, 0, 0);
+            document.getElementById('reply-time-3').textContent = formatDate(reply3Date);
+            
+            // 回复4 - 小雨的紧急提醒：在小雨发布求助帖之后（3天前）
+            const reply4Date = new Date(now);
+            reply4Date.setDate(reply4Date.getDate() - 3);
+            reply4Date.setHours(14, 30, 0, 0);
+            document.getElementById('reply-time-4').textContent = formatDate(reply4Date);
             
             // 返回首页功能
             const backToHomeBtn = document.getElementById('backToHomeBtn');

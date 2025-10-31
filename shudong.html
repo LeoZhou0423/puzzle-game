@@ -142,7 +142,7 @@
                                 <img src="https://picsum.photos/id/91/200/200" alt="用户头像" class="w-10 h-10 rounded-full object-cover">
                                 <div>
                                     <h4 class="font-medium">匿名用户_8724</h4>
-                                    <p class="text-xs text-muted">2小时前</p>
+                                    <p class="text-xs text-muted" id="post-time-1">2小时前</p>
                                 </div>
                             </div>
                         </div>
@@ -169,7 +169,7 @@
                                 <img src="https://picsum.photos/id/43/200/200" alt="倾听者头像" class="w-10 h-10 rounded-full object-cover border-2 border-secondary">
                                 <div>
                                     <h4 class="font-medium text-secondary">倾听者_小暖</h4>
-                                    <p class="text-xs text-muted">3天前</p>
+                                    <p class="text-xs text-muted" id="post-time-2">3天前</p>
                                 </div>
                             </div>
                         </div>
@@ -420,6 +420,22 @@
         }
         
         document.addEventListener('DOMContentLoaded', function() {
+            // 动态设置时间显示
+            function setRelativeTime() {
+                const now = new Date();
+                
+                // 第一个帖子：2小时前
+                document.getElementById('post-time-1').textContent = '2小时前';
+                
+                // 倾听者回复：3天前
+                if(document.getElementById('post-time-2')) {
+                    document.getElementById('post-time-2').textContent = '3天前';
+                }
+            }
+            
+            // 执行时间设置
+            setRelativeTime();
+            
             // 记录当前页面访问
             recordPageVisit();
             
