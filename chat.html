@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>聊天记录</title>
+    <style>
+        body {
+            font-family: 'Microsoft YaHei', sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .chat-container {
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        .chat-header {
+            background-color: #3498db;
+            color: white;
+            padding: 15px 20px;
+            display: flex;
+            align-items: center;
+        }
+        .avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: #ecf0f1;
+            margin-right: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #3498db;
+            font-weight: bold;
+        }
+        .chat-title {
+            flex: 1;
+        }
+        .chat-title h2 {
+            margin: 0;
+            font-size: 18px;
+        }
+        .chat-title p {
+            margin: 0;
+            font-size: 14px;
+            opacity: 0.8;
+        }
+        .chat-content {
+            padding: 20px;
+            max-height: 600px;
+            overflow-y: auto;
+        }
+        .message {
+            margin-bottom: 20px;
+            max-width: 70%;
+        }
+        .message.them {
+            margin-left: 0;
+            margin-right: auto;
+        }
+        .message.you {
+            margin-left: auto;
+            margin-right: 0;
+        }
+        .message-content {
+            padding: 12px 16px;
+            border-radius: 18px;
+            word-wrap: break-word;
+        }
+        .message.them .message-content {
+            background-color: #f0f0f0;
+            border-bottom-left-radius: 5px;
+        }
+        .message.you .message-content {
+            background-color: #3498db;
+            color: white;
+            border-bottom-right-radius: 5px;
+        }
+        .video-message {
+            margin: 10px 0;
+            text-align: center;
+        }
+        .video-message video {
+            max-width: 100%;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        .video-caption {
+            font-size: 12px;
+            color: #666;
+            margin-top: 5px;
+        }
+        .back-link {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: #95a5a6;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+        .back-link:hover {
+            background-color: #7f8c8d;
+        }
+        .waiting-notice {
+            text-align: center;
+            margin-top: 20px;
+            padding: 10px;
+            background-color: #fff3cd;
+            border-radius: 5px;
+            color: #856404;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <div class="chat-container">
+        <div class="chat-header">
+            <div class="avatar">心</div>
+            <div class="chat-title">
+                <h2>心莉</h2>
+                <p>正在输入...</p>
+            </div>
+        </div>
+        
+        <div class="chat-content">
+            <!-- 视频对话内容 -->
+            <div class="message them">
+                <div class="message-content">
+                    心莉，我是小雨！我已经到泰国了，这里的工作环境真的很不错，你也快来吧！
+                </div>
+            </div>
+            
+            <div class="message them video-message">
+                <div class="video-caption">小雨发来的视频</div>
+            </div>
+            
+            <div class="message them">
+                <div class="message-content">
+                    看到了吗？这里的办公环境很豪华，住的地方也很舒适！而且主管说我第一个月就能拿到2万的工资！
+                </div>
+            </div>
+            
+            <div class="message you">
+                <div class="message-content">
+                    真的吗？那太好了！不过你能告诉我具体在泰国哪个城市吗？我也想去看看。
+                </div>
+            </div>
+            
+            <div class="message them">
+                <div class="message-content">
+                    具体位置暂时保密啦~等你来了我会亲自去机场接你的！放心吧，这里绝对安全，工资又高！
+                </div>
+            </div>
+            
+            <div class="message you">
+                <div class="message-content">
+                    可是...我还是有点担心，毕竟是国外，人生地不熟的。
+                </div>
+            </div>
+            
+            <div class="message them">
+                <div class="message-content">
+                    别担心啦！这里有很多中国人，大家都很友好。而且公司会提供签证和机票，你只要带着护照来就行！
+                </div>
+            </div>
+            
+            <div class="message them">
+                <div class="message-content">
+                    对了，阿泰经理说如果你能在下周一前到，还能额外获得5000元的新人奖金哦！机不可失啊！
+                </div>
+            </div>
+            
+            <div class="message you">
+                <div class="message-content">
+                    听起来真不错，让我再考虑考虑...
+                </div>
+            </div>
+            
+            <!-- 等待提示 -->
+            <div class="waiting-notice" id="waitingNotice">
+                正在分析对话内容...
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // 页面访问记录函数
+        function recordPageVisit() {
+            const currentPage = window.location.pathname.split('/').pop();
+            const visitedPages = sessionStorage.getItem('visitedPages') || '';
+            if (!visitedPages.includes(currentPage)) {
+                const updatedPages = visitedPages ? visitedPages + ',' + currentPage : currentPage;
+                sessionStorage.setItem('visitedPages', updatedPages);
+            }
+        }
+        
+        // 聊天界面逻辑
+        document.addEventListener('DOMContentLoaded', function() {
+            // 记录当前页面访问
+            recordPageVisit();
+            
+            // 从sessionStorage获取状态，判断证据收集情况
+            // 只有在emergency_post.html点击联系相关部门按钮后才会为true，否则默认为false
+            // 明确检查contactedPolice状态
+            const contactedPoliceItem = sessionStorage.getItem('contactedPolice');
+            const contactedPolice = contactedPoliceItem !== null && contactedPoliceItem === 'true';
+            
+            // 同时在chat.html中也进行证据判断，保持与emergency_post.html一致的逻辑
+            // 证据收集点：心莉的个人资料页面、求助帖子页面、招聘信息页面和聊天页面
+            const visitedPages = sessionStorage.getItem('visitedPages') || '';
+            const evidencePages = ['xinli_profile.html', 'emergency_post.html', 'recruitment.html', 'chat.html'];
+            
+            // 检查是否访问了所有关键证据页面
+            let enoughEvidence = evidencePages.every(page => visitedPages.includes(page));
+            
+            // 更新sessionStorage中的enoughEvidence状态
+            sessionStorage.setItem('enoughEvidence', enoughEvidence.toString());
+            
+            // 根据状态确定结局类型
+            let endingType = '';
+            
+            // 根据游戏逻辑设置证据值和结局类型
+            // 首先根据是否收集了足够证据设置evidence变量
+            if (enoughEvidence) {
+                // 收集了所有四个关键页面的证据，设置所有证据为true
+                sessionStorage.setItem('evidence1', 'true');
+                sessionStorage.setItem('evidence2', 'true');
+                sessionStorage.setItem('evidence3', 'true');
+                sessionStorage.setItem('evidence4', 'true');
+            } else {
+                // 证据不足，只设置部分证据为true
+                // 这里可以根据实际访问的页面数量来设置不同的证据数量
+                const visitedEvidencePages = evidencePages.filter(page => visitedPages.includes(page)).length;
+                
+                // 根据访问的证据页面数量设置证据变量
+                if (visitedEvidencePages >= 3) {
+                    // 访问了3个以上证据页面
+                    sessionStorage.setItem('evidence1', 'true');
+                    sessionStorage.setItem('evidence2', 'true');
+                    sessionStorage.setItem('evidence3', 'true');
+                    sessionStorage.setItem('evidence4', 'false');
+                } else if (visitedEvidencePages >= 2) {
+                    // 访问了2个证据页面
+                    sessionStorage.setItem('evidence1', 'true');
+                    sessionStorage.setItem('evidence2', 'true');
+                    sessionStorage.setItem('evidence3', 'false');
+                    sessionStorage.setItem('evidence4', 'false');
+                } else if (visitedEvidencePages >= 1) {
+                    // 访问了1个证据页面
+                    sessionStorage.setItem('evidence1', 'true');
+                    sessionStorage.setItem('evidence2', 'false');
+                    sessionStorage.setItem('evidence3', 'false');
+                    sessionStorage.setItem('evidence4', 'false');
+                } else {
+                    // 没有访问任何证据页面
+                    sessionStorage.setItem('evidence1', 'false');
+                    sessionStorage.setItem('evidence2', 'false');
+                    sessionStorage.setItem('evidence3', 'false');
+                    sessionStorage.setItem('evidence4', 'false');
+                }
+            }
+            
+            // 然后根据contactedPolice状态确定结局类型
+            if (contactedPolice && enoughEvidence) {
+                // 最好结局 - 联系了相关部门且收集了足够证据
+                endingType = 'a';
+            } else if (contactedPolice || enoughEvidence) {
+                // 普通结局 - 要么联系了部门但证据不够，要么有证据但没联系部门
+                endingType = 'b';
+            } else {
+                // 最坏结局 - 既没联系部门也没足够证据
+                endingType = 'c';
+            }
+            
+            // 记录结局类型到sessionStorage
+            sessionStorage.setItem('endingType', endingType);
+            
+            // 检查用户是否已经滚动到页面底部的函数
+            function isAtBottom() {
+                const chatContent = document.querySelector('.chat-content');
+                const isBottom = chatContent.scrollHeight - chatContent.scrollTop - chatContent.clientHeight < 10;
+                return isBottom;
+            }
+            
+            // 滚动到页面底部时的处理函数
+            function handleScrollToBottom() {
+                // 移除滚动事件监听器，避免重复触发
+                chatContent.removeEventListener('scroll', scrollListener);
+                
+                // 更新等待提示信息
+                const waitingNotice = document.getElementById('waitingNotice');
+                if (waitingNotice) {
+                    waitingNotice.textContent = '分析完成，正在跳转...';
+                }
+                
+                // 等待3秒后跳转
+                setTimeout(function() {
+                    window.location.href = 'ending.html';
+                }, 3000);
+            }
+            
+            // 滚动事件监听器
+            const chatContent = document.querySelector('.chat-content');
+            const scrollListener = function() {
+                if (isAtBottom()) {
+                    handleScrollToBottom();
+                }
+            };
+            
+            // 添加滚动事件监听器
+            chatContent.addEventListener('scroll', scrollListener);
+            
+            // 立即检查一次是否已经在底部（例如在小屏幕设备上内容可能完全可见）
+            setTimeout(function() {
+                if (isAtBottom()) {
+                    handleScrollToBottom();
+                }
+            }, 500);
+        });
+    </script>
+    <!-- 引入游戏倒计时脚本 -->
+    <script src="countdown.js"></script>
+</body>
+</html>

@@ -1,0 +1,800 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>倾听树洞 - 匿名倾诉平台</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#4A90E2',
+                        secondary: '#50E3C2',
+                        accent: '#F5A623',
+                        dark: '#2C3E50',
+                        light: '#ECF0F1',
+                        muted: '#95A5A6'
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', 'sans-serif'],
+                    },
+                },
+            }
+        }
+    </script>
+    <style type="text/tailwindcss">
+        @layer utilities {
+            .content-auto {
+                content-visibility: auto;
+            }
+            .text-shadow {
+                text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            }
+            .transition-all-300 {
+                transition: all 0.3s ease;
+            }
+            .hover-scale {
+                transition: transform 0.2s ease;
+            }
+            .hover-scale:hover {
+                transform: scale(1.02);
+            }
+            .card-shadow {
+                box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.03);
+            }
+            .hidden-login-btn {
+                opacity: 0.2;
+                transition: all 0.3s ease;
+            }
+            .hidden-login-btn:hover {
+                opacity: 1;
+            }
+        }
+    </style>
+</head>
+<body class="bg-gray-50 font-sans text-dark">
+    <!-- 导航栏 -->
+    <nav class="bg-white shadow-md sticky top-0 z-50">
+        <div class="container mx-auto px-4 py-3 flex justify-between items-center">
+            <div class="flex items-center space-x-2">
+                <i class="fa fa-tree text-primary text-2xl"></i>
+                <h1 class="text-xl font-bold text-primary">倾听树洞</h1>
+            </div>           
+            <div class="flex items-center space-x-4">
+                <button id="actionButton" class="px-4 py-2 bg-primary text-white rounded-full flex items-center hover:bg-primary/90 transition-all-300">
+                    <i class="fa fa-edit mr-2"></i>分享心事
+                </button>
+                <div class="relative">
+                    <button id="userMenuBtn" class="flex items-center space-x-2 px-3 py-2 rounded-full hover:bg-gray-100">
+                        <img src="https://picsum.photos/id/64/200/200" alt="用户头像" class="w-8 h-8 rounded-full object-cover">
+                        <span id="navUserName" class="hidden md:inline text-sm font-medium">游客</span>
+                        <i class="fa fa-chevron-down text-xs text-muted"></i>
+                    </button>
+                    <div id="userMenu" class="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg py-2 hidden">
+                        <button id="loginBtn" class="block w-full text-left px-4 py-2 text-sm hover:bg-gray-100">
+                            <i class="fa fa-sign-in mr-2 text-muted"></i>登录
+                        </button>
+                        <button id="registerBtn" class="block w-full text-left px-4 py-2 text-sm hover:bg-gray-100">
+                            <i class="fa fa-user-plus mr-2 text-muted"></i>注册
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 主要内容 -->
+    <main class="container mx-auto px-4 py-8">
+        <!-- 欢迎消息 -->
+        <div class="text-center mb-12">
+            <h2 class="text-[clamp(1.5rem,3vw,2.5rem)] font-bold text-dark mb-3">在这里，你的心声被听见</h2>
+            <p class="text-muted max-w-2xl mx-auto">匿名分享你的故事，获得温暖的回应。我们守护你的隐私，让倾诉更安心。</p>
+        </div>
+
+        <!-- 内容区域 -->
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+            <!-- 左侧边栏 -->
+            <aside class="lg:col-span-3 space-y-6">
+                <!-- 用户信息卡 -->
+            <div class="bg-white rounded-xl p-6 card-shadow">
+                <div class="flex flex-col items-center text-center">
+                    <img src="https://picsum.photos/id/64/200/200" alt="用户头像" class="w-20 h-20 rounded-full object-cover mb-4 border-4 border-primary/20">
+                    <h3 id="sidebarUserName" class="text-lg font-semibold">游客模式</h3>
+                    <p class="text-sm text-muted mt-1">请登录以使用完整功能</p>
+                    <button id="sidebarLoginBtn" class="mt-4 w-full py-2 bg-primary text-white rounded-lg hover:bg-primary/90 transition-all-300">
+                        <i class="fa fa-sign-in mr-2"></i>立即登录
+                    </button>
+                </div>
+            </div>
+                <!-- 统计信息 -->
+                <div class="bg-white rounded-xl p-6 card-shadow">
+                    <h3 class="text-base font-semibold mb-4 flex items-center">
+                        <i class="fa fa-bar-chart text-primary mr-2"></i>平台数据
+                    </h3>
+                    <div class="space-y-3">
+                        <div class="flex justify-between items-center">
+                            <span class="text-sm text-dark/80">注册用户</span>
+                            <span class="font-semibold">2,451</span>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span class="text-sm text-dark/80">已发布心事</span>
+                            <span class="font-semibold">15,783</span>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span class="text-sm text-dark/80">倾听者数量</span>
+                            <span class="font-semibold">12</span>
+                        </div>
+                    </div>
+                </div>
+            </aside>
+
+            <!-- 中间内容区 -->
+            <div class="lg:col-span-6 space-y-6">
+                <!-- 心事列表 -->
+                <div class="space-y-6">
+                    <!-- 心事卡片 1 -->
+                    <article class="bg-white rounded-xl p-6 card-shadow hover-scale">
+                        <div class="flex items-start justify-between mb-4">
+                            <div class="flex items-center space-x-3">
+                                <img src="https://picsum.photos/id/91/200/200" alt="用户头像" class="w-10 h-10 rounded-full object-cover">
+                                <div>
+                                    <h4 class="font-medium">匿名用户_8724</h4>
+                                    <p class="text-xs text-muted">2小时前</p>
+                                </div>
+                            </div>
+                        </div>
+                        <h3 class="text-lg font-semibold mb-3">最近压力好大，不知道该怎么办</h3>
+                        <p class="text-dark/80 mb-4">工作压力太大，感觉每天都喘不过气来。晚上经常失眠，白天又没有精神工作。好想找个人聊聊，但又不知道该和谁说...</p>
+                        <div class="flex items-center justify-between text-sm">
+                            <div class="flex space-x-6">
+                                <button class="flex items-center space-x-1 text-muted hover:text-primary">
+                                    <i class="fa fa-heart-o"></i>
+                                    <span>42</span>
+                                </button>
+                                <button class="flex items-center space-x-1 text-muted hover:text-primary">
+                                    <i class="fa fa-comment-o"></i>
+                                    <span>8</span>
+                                </button>
+                            </div>
+                            <span class="text-xs text-muted">#心情 #压力</span>
+                        </div>
+                    </article>
+                    <!-- 倾听者回复示例 -->
+                    <article class="bg-white rounded-xl p-6 card-shadow border-l-4 border-secondary hover-scale">
+                        <div class="flex items-start justify-between mb-4">
+                            <div class="flex items-center space-x-3">
+                                <img src="https://picsum.photos/id/43/200/200" alt="倾听者头像" class="w-10 h-10 rounded-full object-cover border-2 border-secondary">
+                                <div>
+                                    <h4 class="font-medium text-secondary">倾听者_小暖</h4>
+                                    <p class="text-xs text-muted">3天前</p>
+                                </div>
+                            </div>
+                        </div>
+                        <h3 class="text-lg font-semibold mb-3">【倾听回复】关于你的困惑，我想对你说...</h3>
+                        <p class="text-dark/80 mb-4">亲爱的朋友，感谢你愿意在这里分享你的感受。你提到的困惑我很理解，很多人都会经历这样的时期。我想告诉你，你并不孤单，你的感受都是正常的。试着给自己一些空间，做一些让自己放松的事情，也许会有所帮助。如果你愿意，我很乐意继续倾听你的故事。</p>
+                        <div class="flex items-center justify-between text-sm">
+                            <div class="flex space-x-6">
+                                <button class="flex items-center space-x-1 text-muted hover:text-primary">
+                                    <i class="fa fa-heart-o"></i>
+                                    <span>256</span>
+                                </button>
+                                <button class="flex items-center space-x-1 text-muted hover:text-primary">
+                                    <i class="fa fa-comment-o"></i>
+                                    <span>42</span>
+                                </button>
+                            </div>
+                            <span class="text-xs text-muted">#倾听 #回复</span>
+                        </div>
+                    </article>
+                </div>
+            </div>
+
+            <!-- 右侧边栏 -->
+            <aside class="lg:col-span-3 space-y-6">
+                <!-- 公告栏 -->
+                <div class="bg-white rounded-xl p-6 card-shadow">
+                    <h3 class="text-base font-semibold mb-4 flex items-center">
+                        <i class="fa fa-bullhorn text-primary mr-2"></i>平台公告
+                    </h3>
+                    <div class="space-y-3">
+                        <a href="#" id="loginInfoBtn" class="block text-sm text-dark/80 hover:text-primary">
+                            <i class="fa fa-circle text-xs text-primary mr-2"></i>
+                            登录须知
+                        </a>
+                        <a href="recruitment.html" id="recruitListenerBtn" class="block text-sm text-dark/80 hover:text-primary">
+                            <i class="fa fa-circle text-xs text-primary mr-2"></i>
+                            招募倾听者
+                        </a>
+                        <a href="#" class="block text-sm text-dark/80 hover:text-primary">
+                            <i class="fa fa-circle text-xs text-primary mr-2"></i>
+                            系统维护公告：10月20日凌晨2点-4点
+                        </a>
+                    </div>
+                </div>
+                <!-- 平台介绍 -->
+                <div class="bg-white rounded-xl p-6 card-shadow">
+                    <h3 class="text-base font-semibold mb-4 flex items-center">
+                        <i class="fa fa-info-circle text-primary mr-2"></i>关于树洞
+                    </h3>
+                    <p class="text-sm text-dark/80 mb-4">倾听树洞是一个匿名倾诉平台，致力于为用户提供安全、私密的情感表达空间。在这里，你可以匿名分享你的故事、感受和困惑，也可以倾听他人的心声。</p>
+                    <div class="flex justify-between items-center">
+                        <span class="text-xs text-muted">已有 2,451 人在这里找到了倾诉的勇气</span>
+                    </div>
+                </div>
+            </aside>
+        </div>
+    </main>
+    
+    <!-- 移除了招募倾听者模态框，改为跳转到专门的招聘页面 -->
+    <!-- 登录须知模态框 -->
+    <div id="loginInfoModal" class="fixed inset-0 bg-black/50 flex items-center justify-center z-50 hidden">
+        <div class="bg-white rounded-xl max-w-lg w-full max-h-[80vh] overflow-y-auto">
+            <div class="p-6">
+                <div class="flex justify-between items-center mb-4">
+                    <h3 class="text-xl font-bold">登录须知</h3>
+                    <button id="closeLoginInfoBtn" class="text-muted hover:text-dark">
+                        <i class="fa fa-times text-xl"></i>
+                    </button>
+                </div>
+                
+                <div class="space-y-4">
+                    <h4 class="font-semibold text-lg">普通用户登录方法</h4>
+                    <p>1. 点击右上角或左侧边栏的"登录"按钮</p>
+                    <p>2. 输入您的用户名和密码</p>
+                    <p>3. 点击"登录"按钮即可进入平台</p>
+                    <p>4. 登录后，您可以：</p>
+                    <ul class="list-disc list-inside ml-4 space-y-1">
+                        <li>发布匿名心事</li>
+                        <li>查看自己发布的心事和回复</li>
+                        <li>查看倾听者（管理员）的所有回复</li>
+                        <li>收藏感兴趣的内容</li>
+                    </ul>
+                    
+                    <div class="border-t border-gray-200 my-6 pt-6">
+                        <h4 class="font-semibold text-lg">重要提示</h4>
+                        <p class="text-red-600">本平台严格保护用户隐私，您的所有信息仅用于身份验证，不会泄露给任何第三方。</p>
+                    </div>
+                    
+                    <div class="bg-gray-50 p-4 rounded-lg border border-gray-200">
+                        <p class="text-sm text-gray-600">
+                            如注册失败 请使用测试账号登录体验
+                        </p>
+                    </div>
+                </div>
+                
+                <div class="mt-6 text-right">
+                    <button id="gotItBtn" class="px-6 py-2 bg-primary text-white rounded-lg hover:bg-primary/90 transition-all-300">
+                        我知道了
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 登录模态框 -->
+    <div id="loginModal" class="fixed inset-0 bg-black/50 flex items-center justify-center z-50 hidden">
+        <div class="bg-white rounded-xl max-w-md w-full">
+            <div class="p-6">
+                <div class="flex justify-between items-center mb-4">
+                    <h3 class="text-xl font-bold">登录</h3>
+                    <button id="closeLoginBtn" class="text-muted hover:text-dark">
+                        <i class="fa fa-times text-xl"></i>
+                    </button>
+                </div>
+                
+                <form id="loginForm" class="space-y-4">
+                    <div>
+                        <label for="username" class="block text-sm font-medium text-gray-700 mb-1">用户名</label>
+                        <input type="text" id="username" name="username" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary">
+                    </div>
+                    <div>
+                        <label for="password" class="block text-sm font-medium text-gray-700 mb-1">密码</label>
+                        <input type="password" id="password" name="password" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary">
+                    </div>
+                    <div class="flex justify-between items-center">
+                        <div class="flex items-center">
+                            <input type="checkbox" id="remember" name="remember" class="h-4 w-4 text-primary border-gray-300 rounded">
+                            <label for="remember" class="ml-2 block text-sm text-gray-700">记住我</label>
+                        </div>
+                        <a href="#" class="text-sm text-primary hover:underline">忘记密码？</a>
+                    </div>
+                    
+                    <button type="submit" class="w-full py-2 bg-primary text-white rounded-lg hover:bg-primary/90 transition-all-300">
+                        登录
+                    </button>
+                    
+                    <div class="text-center text-sm text-gray-600">
+                        还没有账号？<a href="#" id="registerLink" class="text-primary hover:underline">立即注册</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- 发布心事模态框 -->
+    <div id="addPostModal" class="fixed inset-0 bg-black/50 flex items-center justify-center z-50 hidden">
+        <div class="bg-white rounded-xl max-w-2xl w-full max-h-[80vh] overflow-y-auto">
+            <div class="p-6">
+                <div class="flex justify-between items-center mb-4">
+                    <h3 class="text-xl font-bold">分享心事</h3>
+                    <button id="closeAddPostBtn" class="text-muted hover:text-dark">
+                        <i class="fa fa-times text-xl"></i>
+                    </button>
+                </div>
+                
+                <form id="postForm" class="space-y-4">
+                    <div>
+                        <label for="postTitle" class="block text-sm font-medium text-gray-700 mb-1">标题</label>
+                        <input type="text" id="postTitle" name="postTitle" placeholder="给你的心事起个标题..." class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary">
+                    </div>
+                    <div>
+                        <label for="postContent" class="block text-sm font-medium text-gray-700 mb-1">内容</label>
+                        <textarea id="postContent" name="postContent" rows="6" placeholder="在这里分享你的心事..." class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary"></textarea>
+                    </div>
+                    <div>
+                        <label for="postTags" class="block text-sm font-medium text-gray-700 mb-1">标签（用空格分隔）</label>
+                        <input type="text" id="postTags" name="postTags" placeholder="心情 压力 生活..." class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary">
+                    </div>
+                    <div class="bg-gray-50 p-4 rounded-lg">
+                        <h4 class="font-medium mb-2 flex items-center">
+                            <i class="fa fa-shield text-primary mr-2"></i>隐私保护
+                        </h4>
+                        <p class="text-sm text-gray-600">
+                            您的心事将以匿名方式发布，只有您和管理员能够看到您的真实身份。请不要在内容中透露个人敏感信息。
+                        </p>
+                    </div>
+                    
+                    <div class="flex justify-end space-x-4">
+                        <button type="button" id="cancelPostBtn" class="px-6 py-2 border border-gray-300 text-muted rounded-lg hover:bg-gray-50 transition-all-300">
+                            取消
+                        </button>
+                        <button type="submit" class="px-6 py-2 bg-primary text-white rounded-lg hover:bg-primary/90 transition-all-300">
+                            发布心事
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- 注册模态框 -->
+    <div id="registerModal" class="fixed inset-0 bg-black/50 flex items-center justify-center z-50 hidden">
+        <div class="bg-white rounded-xl max-w-md w-full">
+            <div class="p-6">
+                <div class="flex justify-between items-center mb-4">
+                    <h3 class="text-xl font-bold">注册</h3>
+                    <button id="closeRegisterBtn" class="text-muted hover:text-dark">
+                        <i class="fa fa-times text-xl"></i>
+                    </button>
+                </div>
+                
+                <form id="registerForm" class="space-y-4">
+                    <!-- 错误提示区域，初始隐藏 -->
+                    <div id="registerError" class="hidden bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg">
+                        <p class="font-medium mb-1">注册失败</p>
+                        <p class="text-sm">请使用以下测试账号登录体验：</p>
+                        <div class="mt-2 bg-white p-2 rounded font-mono text-sm">
+                            <p>测试账号：<span id="testUsername">listener_admin</span></p>
+                            <p>测试密码：<span id="testPassword">Listen2023!</span></p>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <label for="regUsername" class="block text-sm font-medium text-gray-700 mb-1">用户名</label>
+                        <input type="text" id="regUsername" name="regUsername" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary">
+                    </div>
+                    <div>
+                        <label for="regPassword" class="block text-sm font-medium text-gray-700 mb-1">密码</label>
+                        <input type="password" id="regPassword" name="regPassword" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary">
+                    </div>
+                    <div>
+                        <label for="regConfirmPassword" class="block text-sm font-medium text-gray-700 mb-1">确认密码</label>
+                        <input type="password" id="regConfirmPassword" name="regConfirmPassword" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary">
+                    </div>
+                    
+                    <button type="submit" class="w-full py-2 bg-primary text-white rounded-lg hover:bg-primary/90 transition-all-300">
+                        注册
+                    </button>
+                    
+                    <div class="text-center text-sm text-gray-600">
+                        已有账号？<a href="#" id="loginLinkInRegister" class="text-primary hover:underline">立即登录</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript -->
+    <script>
+        // 页面访问记录函数
+        function recordPageVisit() {
+            const currentPage = window.location.pathname.split('/').pop();
+            const visitedPages = sessionStorage.getItem('visitedPages') || '';
+            if (!visitedPages.includes(currentPage)) {
+                const updatedPages = visitedPages ? visitedPages + ',' + currentPage : currentPage;
+                sessionStorage.setItem('visitedPages', updatedPages);
+            }
+        }
+        
+        document.addEventListener('DOMContentLoaded', function() {
+            // 记录当前页面访问
+            recordPageVisit();
+            
+            // 检测URL参数，判断是否从管理员界面返回
+            function checkAdminStatus() {
+                const urlParams = new URLSearchParams(window.location.search);
+                const navUserName = document.getElementById('navUserName');
+                const sidebarUserName = document.getElementById('sidebarUserName');
+                const loginBtn = document.getElementById('loginBtn');
+                const sidebarLoginBtn = document.getElementById('sidebarLoginBtn');
+                const userMenu = document.getElementById('userMenu');
+                const actionButton = document.getElementById('actionButton');
+                
+                if (urlParams.get('admin') === 'true' || sessionStorage.getItem('isLoggedIn') === 'true') {
+                    // 从管理员界面返回或已登录，显示管理员登录状态
+                    const displayName = sessionStorage.getItem('userName') || '管理员';
+                    
+                    navUserName.textContent = displayName;
+                    sidebarUserName.textContent = displayName + ' (已登录)';
+                    
+                    // 更改登录按钮为退出登录
+                    loginBtn.innerHTML = '<i class="fa fa-sign-out mr-2 text-muted"></i>退出登录';
+                    sidebarLoginBtn.innerHTML = '<i class="fa fa-sign-out mr-2"></i>退出登录';
+                    
+                    // 管理员登录时，将分享心事按钮改为进入后台按钮
+                    if (displayName === '管理员') {
+                        actionButton.innerHTML = '<i class="fa fa-cog mr-2"></i>进入后台';
+                        actionButton.classList.remove('bg-primary');
+                        actionButton.classList.add('bg-secondary');
+                    }
+                    
+                    // 保存登录状态到sessionStorage
+                    sessionStorage.setItem('isLoggedIn', 'true');
+                    sessionStorage.setItem('userName', displayName);
+                }
+            }
+            
+            // 初始化时检查管理员状态
+            checkAdminStatus();
+            
+            // 招募倾听者链接控制
+            const recruitListenerBtn = document.getElementById('recruitListenerBtn');
+            
+            // 添加点击事件，检查登录状态
+            recruitListenerBtn.addEventListener('click', function(e) {
+                // 检查用户是否登录
+                const isLoggedIn = sessionStorage.getItem('isLoggedIn') === 'true';
+                const userName = sessionStorage.getItem('userName');
+                
+                if (!isLoggedIn) {
+                    // 未登录时阻止默认跳转并显示提示
+                    e.preventDefault();
+                    alert('请先登录后查看招聘信息');
+                    openLoginModal();
+                } else if (isLoggedIn && userName === '管理员') {
+                    // 管理员登录时阻止跳转并显示提示
+                    e.preventDefault();
+                    alert('在职员工无需进行招聘');
+                }
+                // 非管理员登录时允许正常跳转到招聘页面
+            });
+            
+            // 用户菜单切换
+            const userMenuBtn = document.getElementById('userMenuBtn');
+            const userMenu = document.getElementById('userMenu');
+            
+            userMenuBtn.addEventListener('click', function() {
+                userMenu.classList.toggle('hidden');
+            });
+            
+            // 点击页面其他地方关闭用户菜单
+            document.addEventListener('click', function(event) {
+                if (!userMenuBtn.contains(event.target) && !userMenu.contains(event.target)) {
+                    userMenu.classList.add('hidden');
+                }
+            });
+            
+            // 登录须知模态框
+            const loginInfoBtn = document.getElementById('loginInfoBtn');
+            const loginInfoModal = document.getElementById('loginInfoModal');
+            const closeLoginInfoBtn = document.getElementById('closeLoginInfoBtn');
+            const gotItBtn = document.getElementById('gotItBtn');
+            
+            function openLoginInfoModal() {
+                loginInfoModal.classList.remove('hidden');
+                document.body.style.overflow = 'hidden';
+            }
+            
+            function closeLoginInfoModal() {
+                loginInfoModal.classList.add('hidden');
+                document.body.style.overflow = '';
+            }
+            
+            loginInfoBtn.addEventListener('click', openLoginInfoModal);
+            closeLoginInfoBtn.addEventListener('click', closeLoginInfoModal);
+            gotItBtn.addEventListener('click', closeLoginInfoModal);
+            
+            // 登录模态框
+            const loginBtn = document.getElementById('loginBtn');
+            const sidebarLoginBtn = document.getElementById('sidebarLoginBtn');
+            const loginModal = document.getElementById('loginModal');
+            const closeLoginBtn = document.getElementById('closeLoginBtn');
+            
+            function openLoginModal() {
+                loginModal.classList.remove('hidden');
+                document.body.style.overflow = 'hidden';
+            }
+            
+            function closeLoginModal() {
+                loginModal.classList.add('hidden');
+                document.body.style.overflow = '';
+            }
+            
+            loginBtn.addEventListener('click', function() {
+                // 检查是否是退出登录按钮
+                if (loginBtn.innerHTML.includes('退出登录')) {
+                    // 清除登录状态
+                    sessionStorage.removeItem('isLoggedIn');
+                    sessionStorage.removeItem('userName');
+                    
+                    // 重置显示为游客状态
+                    document.getElementById('navUserName').textContent = '游客';
+                    document.getElementById('sidebarUserName').textContent = '游客模式';
+                    
+                    // 重置按钮文本
+                    loginBtn.innerHTML = '<i class="fa fa-sign-in mr-2 text-muted"></i>登录';
+                    sidebarLoginBtn.innerHTML = '<i class="fa fa-sign-in mr-2"></i>立即登录';
+                    
+                    // 重置操作按钮为分享心事
+                    const actionButton = document.getElementById('actionButton');
+                    actionButton.innerHTML = '<i class="fa fa-edit mr-2"></i>分享心事';
+                    actionButton.classList.remove('bg-secondary');
+                    actionButton.classList.add('bg-primary');
+                    
+                    // 刷新页面以完全重置状态
+                    window.location.href = window.location.pathname;
+                } else {
+                    openLoginModal();
+                }
+            });
+            
+            sidebarLoginBtn.addEventListener('click', function() {
+                // 检查是否是退出登录按钮
+                if (sidebarLoginBtn.innerHTML.includes('退出登录')) {
+                    // 清除登录状态
+                    sessionStorage.removeItem('isLoggedIn');
+                    sessionStorage.removeItem('userName');
+                    
+                    // 重置显示为游客状态
+                    document.getElementById('navUserName').textContent = '游客';
+                    document.getElementById('sidebarUserName').textContent = '游客模式';
+                    
+                    // 重置按钮文本
+                    loginBtn.innerHTML = '<i class="fa fa-sign-in mr-2 text-muted"></i>登录';
+                    sidebarLoginBtn.innerHTML = '<i class="fa fa-sign-in mr-2"></i>立即登录';
+                    
+                    // 重置操作按钮为分享心事
+                    const actionButton = document.getElementById('actionButton');
+                    actionButton.innerHTML = '<i class="fa fa-edit mr-2"></i>分享心事';
+                    actionButton.classList.remove('bg-secondary');
+                    actionButton.classList.add('bg-primary');
+                    
+                    // 刷新页面以完全重置状态
+                    window.location.href = window.location.pathname;
+                } else {
+                    openLoginModal();
+                }
+            });
+            
+            closeLoginBtn.addEventListener('click', closeLoginModal);
+            
+            // 操作按钮点击事件（根据登录状态显示不同功能）
+            const actionButton = document.getElementById('actionButton');
+            const addPostModal = document.getElementById('addPostModal');
+            const closeAddPostBtn = document.getElementById('closeAddPostBtn');
+            const cancelPostBtn = document.getElementById('cancelPostBtn');
+            
+            function openAddPostModal() {
+                addPostModal.classList.remove('hidden');
+                document.body.style.overflow = 'hidden';
+            }
+            
+            function closeAddPostModal() {
+                addPostModal.classList.add('hidden');
+                document.body.style.overflow = '';
+            }
+            
+            actionButton.addEventListener('click', function() {
+                // 检查是否是管理员登录
+                const displayName = sessionStorage.getItem('userName') || '';
+                
+                if (displayName === '管理员' && actionButton.innerHTML.includes('进入后台')) {
+                    // 管理员点击进入后台
+                    window.location.href = './admin.html';
+                } else {
+                    // 普通用户点击分享心事
+                    // 检查是否已登录
+                    if (sessionStorage.getItem('isLoggedIn') !== 'true') {
+                        // 未登录则提示登录
+                        alert('请先登录后再发布心事');
+                        openLoginModal();
+                        return;
+                    }
+                    
+                    openAddPostModal();
+                }
+            });
+            
+            closeAddPostBtn.addEventListener('click', closeAddPostModal);
+            cancelPostBtn.addEventListener('click', closeAddPostModal);
+            
+            // 注册模态框
+            const registerLink = document.getElementById('registerLink');
+            const loginLinkInRegister = document.getElementById('loginLinkInRegister');
+            const registerModal = document.getElementById('registerModal');
+            const closeRegisterBtn = document.getElementById('closeRegisterBtn');
+            
+            function openRegisterModal() {
+                registerModal.classList.remove('hidden');
+                loginModal.classList.add('hidden');
+                document.body.style.overflow = 'hidden';
+            }
+            
+            function closeRegisterModal() {
+                registerModal.classList.add('hidden');
+                document.body.style.overflow = '';
+            }
+            
+            registerLink.addEventListener('click', openRegisterModal);
+            loginLinkInRegister.addEventListener('click', function() {
+                closeRegisterModal();
+                openLoginModal();
+            });
+            closeRegisterBtn.addEventListener('click', closeRegisterModal);
+            
+            // 表单提交处理（模拟）
+            const loginForm = document.getElementById('loginForm');
+            const postForm = document.getElementById('postForm');
+            const registerForm = document.getElementById('registerForm');
+            
+            loginForm.addEventListener('submit', function(event) {
+                event.preventDefault();
+                const username = document.getElementById('username').value;
+                const password = document.getElementById('password').value;
+                
+                // 模拟登录验证
+                if (username && password) {
+                    // 模拟管理员登录检测
+                    if (username === 'listener_admin' && password === 'Listen2023!') {
+                        closeLoginModal();
+                        alert('您已以管理员身份登录，正在跳转到管理员后台...');
+                        // 跳转到管理员后台页面
+                        window.location.href = './admin.html';
+                    } else if (username === 'xinli123' && password === 'Xinli@2025') {
+                        // 心莉账号登录
+                        closeLoginModal();
+                        // 保存登录状态
+                        sessionStorage.setItem('isLoggedIn', 'true');
+                        sessionStorage.setItem('userName', 'xinli123');
+                        
+                        // 更新页面显示
+                        document.getElementById('navUserName').textContent = 'xinli123';
+                        document.getElementById('sidebarUserName').textContent = 'xinli123 (已登录)';
+                        document.getElementById('loginBtn').innerHTML = '<i class="fa fa-sign-out mr-2 text-muted"></i>退出登录';
+                        document.getElementById('sidebarLoginBtn').innerHTML = '<i class="fa fa-sign-out mr-2"></i>退出登录';
+                        
+                        alert('登录成功！');
+                    } else {
+                        // 账号密码错误
+                        alert('账号或密码错误，请核对后再试');
+                    }
+                } else {
+                    alert('请输入用户名和密码');
+                }
+            });
+            
+            postForm.addEventListener('submit', function(event) {
+                event.preventDefault();
+                const title = document.getElementById('postTitle').value;
+                const content = document.getElementById('postContent').value;
+                
+                if (title && content) {
+                    alert('心事发布成功！在实际应用中，这里会发送数据到服务器。');
+                    closeAddPostModal();
+                    // 重置表单
+                    postForm.reset();
+                } else {
+                    alert('请填写标题和内容');
+                }
+            });
+            
+            // 注册表单提交处理
+            const registerError = document.getElementById('registerError');
+            const testUsername = document.getElementById('testUsername');
+            const testPassword = document.getElementById('testPassword');
+            
+            // 添加复制功能
+            function addCopyFunctionality(element) {
+                element.style.cursor = 'pointer';
+                element.addEventListener('click', function() {
+                    navigator.clipboard.writeText(element.textContent).then(() => {
+                        const originalText = element.textContent;
+                        element.textContent = '已复制！';
+                        element.classList.add('bg-green-100');
+                        setTimeout(() => {
+                            element.textContent = originalText;
+                            element.classList.remove('bg-green-100');
+                        }, 2000);
+                    });
+                });
+            }
+            
+            // 为测试账号和密码添加复制功能
+            addCopyFunctionality(testUsername);
+            addCopyFunctionality(testPassword);
+            
+            registerForm.addEventListener('submit', function(event) {
+                event.preventDefault();
+                
+                // 无论用户输入什么，都在页面上显示注册失败和测试账号信息
+                registerError.classList.remove('hidden');
+                
+                // 滚动到错误提示区域
+                registerError.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                
+                // 不自动跳转到登录页面，让用户可以复制测试账号
+            });
+            
+            // 重置表单时隐藏错误信息
+            registerForm.addEventListener('reset', function() {
+                registerError.classList.add('hidden');
+            });
+            
+            // 打开注册模态框时隐藏错误信息
+            function openRegisterModal() {
+                registerModal.classList.remove('hidden');
+                loginModal.classList.add('hidden');
+                document.body.style.overflow = 'hidden';
+                // 隐藏错误信息
+                registerError.classList.add('hidden');
+            }
+            
+            // 模态框点击外部关闭
+            const modals = [loginInfoModal, loginModal, addPostModal, registerModal];
+            
+            modals.forEach(modal => {
+                modal.addEventListener('click', function(event) {
+                    if (event.target === modal) {
+                        modal.classList.add('hidden');
+                        document.body.style.overflow = '';
+                    }
+                });
+            });
+            
+            // 阻止模态框内容点击事件冒泡
+            const modalContents = document.querySelectorAll('#loginInfoModal > div, #loginModal > div, #addPostModal > div, #registerModal > div');
+            
+            modalContents.forEach(content => {
+                content.addEventListener('click', function(event) {
+                    event.stopPropagation();
+                });
+            });
+            
+            // ESC键关闭模态框
+            document.addEventListener('keydown', function(event) {
+                if (event.key === 'Escape') {
+                    modals.forEach(modal => {
+                        modal.classList.add('hidden');
+                    });
+                    document.body.style.overflow = '';
+                }
+            });
+        });
+    </script>
+    <!-- 引入游戏倒计时脚本 -->
+    <script src="countdown.js"></script>
+</body>
+</html>

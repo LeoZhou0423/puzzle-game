@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="ZH-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>邮件</title>
+    <!-- 引入Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- 引入Font Awesome -->
+    <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <!-- Tailwind CSS配置 -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#3B82F6',
+                        secondary: '#6B7280',
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', 'sans-serif'],
+                    },
+                },
+            }
+        }
+    </script>
+    <!-- 自定义样式 -->
+    <style type="text/tailwindcss">
+        @layer utilities {
+            .content-auto {
+                content-visibility: auto;
+            }
+        }
+    </style>
+</head>
+<body class="bg-gray-100 min-h-screen flex items-center justify-center p-4">
+    <!-- 单个邮件显示容器 -->
+    <div class="w-full max-w-4xl bg-white rounded-lg shadow-lg overflow-hidden">
+        <!-- 邮件内容区域 -->
+        <div class="p-6">
+                    <div class="flex items-center justify-between mb-4">
+                        <h2 class="text-xl font-semibold text-gray-800">【求助】失踪 急！急！急！！！！</h2>
+                    </div>
+
+                    <!-- 邮件头部信息 -->
+                    <div class="border-b border-gray-200 pb-4 mb-4">
+                        <div class="flex items-center mb-3">
+                            <div>
+                                <div class="flex items-center">
+                                    <span class="font-medium text-gray-900">心莉</span>
+                                    <span class="text-sm text-gray-500 ml-2">(xinli@example.com)</span>
+                                </div>
+                                <div class="flex items-center text-sm text-gray-500 mt-1">
+                                    <span>发送时间：<span id="emailTime"></span></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 邮件正文 -->
+                    <div class="prose max-w-none">
+                        <p class="text-gray-700 mb-4">云寻：</p>
+                        <p class="text-gray-700 mb-4">您好！我的闺蜜失踪了。</p>
+                        <p class="text-gray-700 mb-4">我发现她最近经常去一个树洞平台，那里可能有线索</p>
+                        <p class="my-6">
+                            <a href="./shudong.html" class="text-blue-600 underline hover:text-green-600 transition-colors duration-200">https://shudong.qingsu.com</a>
+                        </p>
+                        <p class="text-gray-700 mb-4">剩下的就麻烦您了。</p>
+                        <p class="text-gray-700 mb-4">十分感谢！</p>
+                        <p class="text-gray-700 font-medium">心莉</p>
+                    </div>
+                </div>
+    </div>
+
+    <!-- 交互脚本 -->
+    <script>
+        // 页面加载完成后执行
+        document.addEventListener('DOMContentLoaded', function() {
+            // 显示当前时间减去五分钟
+            function displayEmailTime() {
+                const now = new Date();
+                // 减去五分钟
+                now.setMinutes(now.getMinutes() - 5);
+                
+                // 格式化时间
+                const year = now.getFullYear();
+                const month = String(now.getMonth() + 1).padStart(2, '0');
+                const day = String(now.getDate()).padStart(2, '0');
+                const hours = String(now.getHours()).padStart(2, '0');
+                const minutes = String(now.getMinutes()).padStart(2, '0');
+                
+                const formattedTime = `${year}年${month}月${day}日 ${hours}:${minutes}`;
+                document.getElementById('emailTime').textContent = formattedTime;
+            }
+            
+            // 立即执行并显示时间
+            displayEmailTime();
+
+            // 为链接添加点击效果
+            const verifyLink = document.querySelector('a[href="https://verify.example.com/auth?token=abcd1234"]');
+            if (verifyLink) {
+                verifyLink.addEventListener('click', function(e) {
+                    // 阻止默认行为，在实际应用中可以根据需要注释掉这行
+                    // e.preventDefault();
+                    console.log('验证链接被点击');
+                });
+            }
+        });
+    </script>
+    <!-- 引入游戏倒计时脚本 -->
+    <script src="countdown.js"></script>
+</body>
+</html>

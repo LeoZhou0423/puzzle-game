@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>心莉的个人主页 - 树洞倾听平台</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#3b82f6',
+                        secondary: '#6b7280',
+                        success: '#10b981',
+                        warning: '#f59e0b',
+                        danger: '#ef4444',
+                        info: '#06b6d4',
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', 'sans-serif'],
+                    },
+                },
+            }
+        }
+    </script>
+    <style type="text/tailwindcss">
+        @layer utilities {
+            .content-auto {
+                content-visibility: auto;
+            }
+            .card-shadow {
+                box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+            }
+            .transition-custom {
+                transition: all 0.3s cubic-bezier(.25,.8,.25,1);
+            }
+        }
+    </style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+    <!-- 导航栏 -->
+    <nav class="bg-white shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex items-center">
+                    <a href="./shudong.html" class="flex items-center text-primary font-bold text-xl">
+                        <i class="fa fa-tree mr-2"></i>
+                        <span>树洞倾听平台</span>
+                    </a>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <button id="backToHomeBtn" class="px-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:text-primary hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary">
+                        <i class="fa fa-home mr-1"></i> 返回首页
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 主要内容 -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <!-- 返回按钮 -->
+        <div class="mb-6">
+            <a href="./emergency_post.html" class="inline-flex items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary transition-custom">
+                <i class="fa fa-arrow-left mr-2"></i> 返回帖子
+            </a>
+        </div>
+
+        <!-- 个人资料卡片 -->
+        <div class="bg-white rounded-lg shadow-sm overflow-hidden mb-6">
+            <div class="px-6 py-6 border-b border-gray-100">
+                <div class="flex flex-col md:flex-row items-start md:items-center">
+                    <div class="flex-shrink-0 mb-4 md:mb-0">
+                        <div class="h-20 w-20 rounded-full bg-purple-100 flex items-center justify-center border-4 border-purple-300">
+                            <span class="text-2xl font-bold text-purple-700">莉</span>
+                        </div>
+                    </div>
+                    <div class="ml-0 md:ml-6">
+                        <h1 class="text-2xl font-bold text-gray-900">心莉</h1>
+                        <p class="text-lg text-gray-700 mt-2">用户ID: #1024</p>
+                        <p class="text-lg text-gray-700 mt-1">注册时间: 2025-01-15</p>
+                    </div>
+                </div>
+            </div>
+            <div class="px-6 py-6">
+                <h2 class="text-xl font-semibold text-gray-900 mb-4">个性签名</h2>
+                <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4 rounded-r-lg">
+                    <p class="text-lg text-gray-800">如果我失踪了。就登录我的账号。账号：xinli123；密码：Xinli@2025</p>
+                </div>
+            </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 最近动态 -->
+        <div class="bg-white rounded-lg shadow-sm overflow-hidden">
+            <div class="px-6 py-4 border-b border-gray-100">
+                <h3 class="text-lg font-semibold text-gray-900">最近动态</h3>
+            </div>
+            <div class="px-6 py-4">
+                <p class="text-gray-500 text-center py-8">暂无动态</p>
+            </div>
+        </div>
+    </main>
+
+    <!-- 页脚 -->
+    <footer class="bg-white border-t border-gray-200 mt-12">
+        <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
+            <p class="text-center text-sm text-gray-500">
+                © 2023 树洞倾听平台
+            </p>
+        </div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script>
+        // 页面访问记录函数
+        function recordPageVisit() {
+            const currentPage = window.location.pathname.split('/').pop();
+            const visitedPages = sessionStorage.getItem('visitedPages') || '';
+            if (!visitedPages.includes(currentPage)) {
+                const updatedPages = visitedPages ? visitedPages + ',' + currentPage : currentPage;
+                sessionStorage.setItem('visitedPages', updatedPages);
+            }
+        }
+        
+        document.addEventListener('DOMContentLoaded', function() {
+            // 页面加载时记录访问
+            recordPageVisit();
+            
+            // 返回首页功能
+            const backToHomeBtn = document.getElementById('backToHomeBtn');
+            backToHomeBtn.addEventListener('click', function() {
+                window.location.href = './shudong.html';
+            });
+        });
+    </script>
+    <!-- 引入游戏倒计时脚本 -->
+    <script src="countdown.js"></script>
+</body>
+</html>

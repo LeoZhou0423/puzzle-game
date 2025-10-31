@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>故事结局</title>
+    <style>
+        body {
+            font-family: 'Microsoft YaHei', sans-serif;
+            line-height: 1.6;
+            color: #333;
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 20px;
+        }
+        .container {
+            max-width: 800px;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 0 30px rgba(0,0,0,0.1);
+        }
+        h1 {
+            font-size: 36px;
+            margin-bottom: 30px;
+        }
+        p {
+            font-size: 18px;
+            margin-bottom: 20px;
+            line-height: 1.8;
+        }
+        .outcome-a {
+            background-color: #e8f8f5;
+            color: #16a085;
+            border: 2px solid #16a085;
+        }
+        .outcome-b {
+            background-color: #fef9e7;
+            color: #f39c12;
+            border: 2px solid #f39c12;
+        }
+        .outcome-c {
+            background-color: #fdf2f2;
+            color: #e74c3c;
+            border: 2px solid #e74c3c;
+        }
+        .btn {
+            display: inline-block;
+            padding: 15px 30px;
+            margin-top: 30px;
+            background-color: #3498db;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            font-size: 18px;
+            transition: background-color 0.3s;
+        }
+        .btn:hover {
+            background-color: #2980b9;
+        }
+        .warning {
+            background-color: #fff3cd;
+            color: #856404;
+            padding: 20px;
+            border-radius: 5px;
+            margin: 20px 0;
+            text-align: left;
+        }
+        .success {
+            background-color: #d4edda;
+            color: #155724;
+            padding: 20px;
+            border-radius: 5px;
+            margin: 20px 0;
+            text-align: left;
+        }
+        .danger {
+            background-color: #f8d7da;
+            color: #721c24;
+            padding: 20px;
+            border-radius: 5px;
+            margin: 20px 0;
+            text-align: left;
+        }
+        .anti-fraud-link {
+            display: inline-block;
+            padding: 12px 24px;
+            margin: 20px 0;
+            background-color: #e74c3c;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+        .anti-fraud-link:hover {
+            background-color: #c0392b;
+        }
+        .case-link {
+            display: inline-block;
+            padding: 12px 24px;
+            margin: 20px 0;
+            background-color: #8e44ad;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+        .case-link:hover {
+            background-color: #7d3c98;
+        }
+        .evidence-summary {
+            background-color: #f8f9fa;
+            border: 2px solid #3498db;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 20px 0;
+            text-align: center;
+            font-weight: bold;
+        }
+        .evidence-summary p {
+            margin: 5px 0;
+            color: #2c3e50;
+        }
+    </style>
+</head>
+<body>
+    <div id="ending-container" class="container">
+        <!-- 结局内容将通过JavaScript动态生成 -->
+        <h1>正在加载结局...</h1>
+        <p>请稍候，故事即将结束...</p>
+    </div>
+    
+    <script>
+        // 直接在页面加载后执行，无需额外延迟
+        document.addEventListener('DOMContentLoaded', function() {
+                // 从sessionStorage读取结局类型
+                const type = sessionStorage.getItem('endingType');
+                const container = document.getElementById('ending-container');
+                
+                // 如果没有endingType，说明用户直接访问了此页面或数据未正确设置，重定向回首页
+                if (!type) {
+                    window.location.href = 'index.html';
+                    return;
+                }
+            
+                // 计算收集的证据数量
+                let evidenceCount = 0;
+                if (sessionStorage.getItem('evidence1') === 'true') evidenceCount++;
+                if (sessionStorage.getItem('evidence2') === 'true') evidenceCount++;
+                if (sessionStorage.getItem('evidence3') === 'true') evidenceCount++;
+                if (sessionStorage.getItem('evidence4') === 'true') evidenceCount++;
+                
+                if (type === 'a') {
+                    // 好结局：救出来了
+                    container.className = 'container outcome-a';
+                    container.innerHTML = `
+                        <h1>小雨被成功救出</h1>
+                        <p>经过你的不懈努力，成功说服心莉报警并提供了 <strong>${evidenceCount}</strong> 个关键证据。</p>
+                        <div class="evidence-summary">
+                            <p><strong>收集的证据总数：</strong>${evidenceCount}/4</p>
+                        </div>
+                        <div class="success">
+                            <h3>🎉 案件进展：</h3>
+                            <p>• 警方迅速行动，根据提供的线索定位到了位于泰国的诈骗园区</p>
+                            <p>• 经过跨国合作，成功解救出包括小雨在内的多名受害者</p>
+                            <p>• 小雨虽然经历了惊吓，但身体状况良好，现已安全返回家中</p>
+                            <p>• 犯罪团伙主要成员已被逮捕，案件正在进一步调查中</p>
+                        </div>
+                        <p>你的冷静判断和及时报警挽救了一条生命，也帮助警方捣毁了一个诈骗团伙。</p>
+                        <a href="https://www.12377.cn/" class="anti-fraud-link" target="_blank">举报诈骗，人人有责</a>
+                        <a href="index.html" class="btn">返回首页</a>
+                    `;
+                } else if (type === 'b') {
+                    // 普通结局：没救出来
+                    container.className = 'container outcome-b';
+                    container.innerHTML = `
+                        <h1>小雨仍下落不明</h1>
+                        <p>尽管你努力劝说，但心莉最终选择了私下联系"招聘者"，而且收集的证据（${evidenceCount}个）不足以说服她采取正确行动。</p>
+                        <div class="evidence-summary">
+                            <p><strong>收集的证据总数：</strong>${evidenceCount}/4</p>
+                        </div>
+                        <div class="warning">
+                            <h3>⚠️ 事态发展：</h3>
+                            <p>• 随着时间推移，小雨的联系越来越少，最后完全失联</p>
+                            <p>• 当最终选择报警时，已经错过了最佳救援时机</p>
+                            <p>• 警方虽然介入调查，但由于线索有限，难以精确定位</p>
+                            <p>• 目前小雨仍然下落不明，案件仍在侦查中</p>
+                        </div>
+                        <p>面对可疑情况，请记住：<strong>及时报警是最有效的方式</strong>。拖延可能导致无法挽回的后果。</p>
+                        <a href="index.html" class="btn">返回首页</a>
+                    `;
+                } else if (type === 'c') {
+                    // 黑暗结局：求助者也被骗
+                    container.className = 'container outcome-c';
+                    container.innerHTML = `
+                        <h1>心莉也失踪了</h1>
+                        <p>由于只收集了 <strong>${evidenceCount}</strong> 个证据，无法识破骗局，心莉被那段"报平安"的视频打动，决定亲自前往泰国。</p>
+                        <div class="evidence-summary">
+                            <p><strong>收集的证据总数：</strong>${evidenceCount}/4</p>
+                        </div>
+                        <div class="danger">
+                            <h3>🚨 悲剧发生：</h3>
+                            <p>• 心莉飞往泰国后，很快与家人朋友失去联系</p>
+                            <p>• 警方调查发现，那段视频是使用AI换脸技术伪造的</p>
+                            <p>• 两个年轻女孩都落入了同一个诈骗团伙的陷阱</p>
+                            <p>• 目前两人均下落不明，情况十分危急</p>
+                        </div>
+                        <p>面对跨境高薪招聘，请保持高度警惕。AI换脸等技术已被诈骗分子广泛用于实施诈骗。</p>
+                        <a href="https://www.spp.gov.cn/xwfbh/wsfbh/202407/t20240726_661524.shtml" class="case-link" target="_blank">查看真实案例</a>
+                        <a href="index.html" class="btn">返回首页</a>
+                    `;
+                } else {
+                    // 默认结局或无效参数
+                    container.innerHTML = `
+                        <h1>故事尚未结束</h1>
+                        <p>你的选择将决定故事的走向...</p>
+                        <div class="evidence-summary">
+                            <p><strong>收集的证据总数：</strong>${evidenceCount}/4</p>
+                        </div>
+                        <a href="index.html" class="btn">重新开始</a>
+                    `;
+                }
+            
+                // 记录结局访问
+                console.log('结局页面已访问，结局类型：', type || '未知');
+                
+                // 结局内容渲染完成后再加载倒计时脚本
+                const countdownScript = document.createElement('script');
+                countdownScript.src = 'countdown.js';
+                document.body.appendChild(countdownScript);
+        });
+    </script>
+</body>
+</html>
